@@ -14,18 +14,23 @@ import { Component } from '@angular/core';
 
       <div class="workflows-toolbar">
         <button class="btn btn-primary">Create Workflow</button>
-        <input type="text" placeholder="Search workflows..." class="search-input" />
+        <input
+          type="text"
+          placeholder="Search workflows..."
+          class="search-input"
+          aria-label="Search workflows"
+        />
       </div>
 
       <section class="workflows-table">
         <table>
           <thead>
             <tr>
-              <th>Workflow Name</th>
-              <th>Status</th>
-              <th>Created</th>
-              <th>Last Run</th>
-              <th>Actions</th>
+              <th scope="col">Workflow Name</th>
+              <th scope="col">Status</th>
+              <th scope="col">Created</th>
+              <th scope="col">Last Run</th>
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -34,21 +39,21 @@ import { Component } from '@angular/core';
               <td><span class="badge badge-active">Active</span></td>
               <td>2 days ago</td>
               <td>1 hour ago</td>
-              <td><button>Edit</button></td>
+              <td><button class="btn btn-primary btn-sm">Edit</button></td>
             </tr>
             <tr>
               <td>Report Generation</td>
               <td><span class="badge badge-active">Active</span></td>
               <td>1 week ago</td>
               <td>Yesterday</td>
-              <td><button>Edit</button></td>
+              <td><button class="btn btn-primary btn-sm">Edit</button></td>
             </tr>
             <tr>
               <td>Data Sync</td>
               <td><span class="badge badge-inactive">Inactive</span></td>
               <td>2 weeks ago</td>
               <td>Never</td>
-              <td><button>Edit</button></td>
+              <td><button class="btn btn-primary btn-sm">Edit</button></td>
             </tr>
           </tbody>
         </table>
@@ -69,7 +74,7 @@ import { Component } from '@angular/core';
       }
 
       p {
-        color: #666;
+        color: var(--lab-ink-soft);
         margin-bottom: 2rem;
       }
 
@@ -79,28 +84,11 @@ import { Component } from '@angular/core';
         margin-bottom: 2rem;
       }
 
-      .btn {
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: background-color 0.2s ease;
-      }
-
-      .btn-primary {
-        background-color: #0f766e;
-        color: white;
-      }
-
-      .btn-primary:hover {
-        background-color: #115e59;
-      }
 
       .search-input {
         flex: 1;
         padding: 0.75rem;
-        border: 1px solid #ddd;
+        border: 1px solid var(--lab-line);
         border-radius: 4px;
         font-size: 1rem;
       }
@@ -112,15 +100,15 @@ import { Component } from '@angular/core';
       table {
         width: 100%;
         border-collapse: collapse;
-        background: white;
-        border: 1px solid #ddd;
+        background: var(--lab-surface-strong);
+        border: 1px solid var(--lab-line);
         border-radius: 4px;
         overflow: hidden;
       }
 
       thead {
-        background: #f5f5f5;
-        border-bottom: 2px solid #ddd;
+        background: var(--lab-surface);
+        border-bottom: 2px solid var(--lab-line);
       }
 
       th {
@@ -131,7 +119,7 @@ import { Component } from '@angular/core';
 
       td {
         padding: 1rem;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--lab-line);
       }
 
       .badge {
@@ -142,28 +130,15 @@ import { Component } from '@angular/core';
       }
 
       .badge-active {
-        background: #d4edda;
-        color: #155724;
+        background: color-mix(in srgb, var(--lab-accent) 16%, var(--lab-surface-strong));
+        color: var(--lab-accent-strong);
       }
 
       .badge-inactive {
-        background: #f8d7da;
-        color: #721c24;
+        background: color-mix(in srgb, var(--lab-ink-soft) 18%, var(--lab-surface-strong));
+        color: var(--lab-ink);
       }
 
-      button {
-        padding: 0.5rem 1rem;
-        background: #0f766e;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9rem;
-      }
-
-      button:hover {
-        background: #115e59;
-      }
     `,
   ],
 })

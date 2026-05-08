@@ -83,6 +83,27 @@ const kitSeo: SeoMetadata = {
   ],
 };
 
+const dashboardSeo: SeoMetadata = {
+  title: 'Dashboard | AI Automation Lab',
+  description:
+    'Track AI operations, workflow health, and delivery metrics from the AI Automation Lab dashboard.',
+  canonicalUrl: 'https://example.com/dashboard',
+};
+
+const workflowsSeo: SeoMetadata = {
+  title: 'Workflows | AI Automation Lab',
+  description:
+    'Manage and review AI workflow automations, orchestration states, and execution paths.',
+  canonicalUrl: 'https://example.com/workflows',
+};
+
+const settingsSeo: SeoMetadata = {
+  title: 'Settings | AI Automation Lab',
+  description:
+    'Configure AI Automation Lab preferences, integrations, and environment-specific options.',
+  canonicalUrl: 'https://example.com/settings',
+};
+
 export const routes: Routes = [
   {
     path: '',
@@ -111,16 +132,22 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
+        title: dashboardSeo.title,
+        data: { seo: dashboardSeo },
         loadComponent: () =>
           import('@features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
       {
         path: 'workflows',
+        title: workflowsSeo.title,
+        data: { seo: workflowsSeo },
         loadComponent: () =>
           import('@features/workflows/workflows.component').then((m) => m.WorkflowsComponent),
       },
       {
         path: 'settings',
+        title: settingsSeo.title,
+        data: { seo: settingsSeo },
         loadComponent: () =>
           import('@features/settings/settings.component').then((m) => m.SettingsComponent),
       },

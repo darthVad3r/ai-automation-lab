@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
+import { AppTheme } from '@app/state/app.state';
 import { AppStore } from '@app/state/app.store';
 
 /**
@@ -23,7 +24,7 @@ import { AppStore } from '@app/state/app.store';
             {{ store.sidebarOpen() ? 'Close Sidebar' : 'Open Sidebar' }}
           </button>
           <button type="button" class="action-button" (click)="toggleTheme()">
-            Theme: {{ store.theme() }}
+            Theme: {{ store.theme() }} → {{ nextTheme() }}
           </button>
           <button type="button" class="action-button" (click)="toggleLoading()">
             {{ store.isLoading() ? 'Stop Loading' : 'Start Loading' }}
@@ -123,18 +124,18 @@ import { AppStore } from '@app/state/app.store';
       }
 
       .action-button {
-        border: 1px solid #cbd5e1;
-        background: #ffffff;
+        border: 1px solid var(--lab-line);
+        background: var(--lab-surface-strong);
         border-radius: 999px;
         padding: 0.7rem 1rem;
         font-weight: 600;
-        color: #172033;
+        color: var(--lab-ink);
         cursor: pointer;
       }
 
       .action-button:hover {
-        border-color: #0f766e;
-        color: #0f766e;
+        border-color: var(--lab-accent);
+        color: var(--lab-accent);
       }
 
       .action-button:disabled {
@@ -143,9 +144,9 @@ import { AppStore } from '@app/state/app.store';
       }
 
       .action-button--primary {
-        background: #0f766e;
-        border-color: #0f766e;
-        color: #ffffff;
+        background: var(--lab-accent);
+        border-color: var(--lab-accent);
+        color: var(--lab-surface-strong);
       }
 
       .state-panel {
@@ -154,10 +155,10 @@ import { AppStore } from '@app/state/app.store';
 
       .state-panel__card {
         padding: 1.5rem;
-        border: 1px solid #ddd;
+        border: 1px solid var(--lab-line);
         border-radius: 12px;
-        background: #ffffff;
-        box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+        background: var(--lab-surface-strong);
+        box-shadow: var(--lab-shadow);
       }
 
       .state-panel__card h2 {
@@ -174,7 +175,7 @@ import { AppStore } from '@app/state/app.store';
       dl div {
         padding: 0.85rem 1rem;
         border-radius: 10px;
-        background: #f8fafc;
+        background: var(--lab-surface);
       }
 
       dt {
@@ -182,19 +183,19 @@ import { AppStore } from '@app/state/app.store';
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.04em;
-        color: #64748b;
+        color: var(--lab-ink-soft);
         margin-bottom: 0.35rem;
       }
 
       dd {
         margin: 0;
         font-weight: 600;
-        color: #172033;
+        color: var(--lab-ink);
       }
 
       .state-panel__message {
         margin: 1rem 0 0;
-        color: #0f766e;
+        color: var(--lab-accent);
         font-weight: 600;
       }
 
@@ -204,7 +205,7 @@ import { AppStore } from '@app/state/app.store';
       }
 
       p {
-        color: #666;
+        color: var(--lab-ink-soft);
         margin-bottom: 2rem;
       }
 
@@ -216,14 +217,14 @@ import { AppStore } from '@app/state/app.store';
 
       .card {
         padding: 1.5rem;
-        border: 1px solid #ddd;
+        border: 1px solid var(--lab-line);
         border-radius: 8px;
-        background: #f9f9f9;
+        background: var(--lab-surface);
         transition: box-shadow 0.2s ease;
       }
 
       .card:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--lab-shadow);
       }
 
       .card h2 {
@@ -246,14 +247,24 @@ import { AppStore } from '@app/state/app.store';
 })
 export class DashboardComponent {
   readonly store: AppStore = inject(AppStore);
+  private readonly themeOrder: AppTheme[] = ['light', 'dark', 'system'];
 
   toggleSidebar(): void {
     this.store.toggleSidebar();
   }
 
   toggleTheme(): void {
-    const nextTheme = this.store.theme() === 'light' ? 'dark' : 'light';
-    this.store.setTheme(nextTheme);
+    this.store.setTheme(this.nextTheme());
+  }
+
+  nextTheme(): AppTheme {
+    return this.getNextTheme(this.store.theme());
+  }
+
+  private getNextTheme(currentTheme: AppTheme): AppTheme {
+    const currentIndex = this.themeOrder.indexOf(currentTheme);
+    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % this.themeOrder.length;
+    return this.themeOrder[nextIndex];
   }
 
   toggleLoading(): void {

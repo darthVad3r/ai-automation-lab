@@ -15,12 +15,12 @@ import { Component } from '@angular/core';
       <div class="settings-layout">
         <aside class="settings-sidebar">
           <nav class="settings-nav">
-            <a href="#" class="nav-item active">Account</a>
-            <a href="#" class="nav-item">Preferences</a>
-            <a href="#" class="nav-item">Notifications</a>
-            <a href="#" class="nav-item">Integrations</a>
-            <a href="#" class="nav-item">API Keys</a>
-            <a href="#" class="nav-item">Billing</a>
+            <button type="button" class="nav-item active">Account</button>
+            <button type="button" class="nav-item">Preferences</button>
+            <button type="button" class="nav-item">Notifications</button>
+            <button type="button" class="nav-item">Integrations</button>
+            <button type="button" class="nav-item">API Keys</button>
+            <button type="button" class="nav-item">Billing</button>
           </nav>
         </aside>
 
@@ -28,16 +28,16 @@ import { Component } from '@angular/core';
           <section class="settings-section">
             <h2>Account Settings</h2>
             <div class="settings-group">
-              <label>Email Address</label>
-              <input type="email" value="user@example.com" />
+              <label for="settings-email">Email Address</label>
+              <input id="settings-email" type="email" value="user@example.com" />
             </div>
             <div class="settings-group">
-              <label>Full Name</label>
-              <input type="text" value="John Doe" />
+              <label for="settings-full-name">Full Name</label>
+              <input id="settings-full-name" type="text" value="John Doe" />
             </div>
             <div class="settings-group">
-              <label>Organization</label>
-              <input type="text" value="AI Automation Lab" />
+              <label for="settings-organization">Organization</label>
+              <input id="settings-organization" type="text" value="AI Automation Lab" />
             </div>
             <button class="btn btn-primary">Save Changes</button>
           </section>
@@ -73,12 +73,12 @@ import { Component } from '@angular/core';
       h2 {
         font-size: 1.5rem;
         margin-bottom: 1.5rem;
-        border-bottom: 2px solid #f0f0f0;
+        border-bottom: 2px solid var(--lab-line);
         padding-bottom: 1rem;
       }
 
       p {
-        color: #666;
+        color: var(--lab-ink-soft);
         margin-bottom: 2rem;
       }
 
@@ -89,7 +89,7 @@ import { Component } from '@angular/core';
       }
 
       .settings-sidebar {
-        background: #f9f9f9;
+        background: var(--lab-surface);
         border-radius: 8px;
         padding: 1rem;
         height: fit-content;
@@ -103,23 +103,27 @@ import { Component } from '@angular/core';
 
       .nav-item {
         padding: 0.75rem 1rem;
+        border: none;
         border-radius: 4px;
-        text-decoration: none;
-        color: #333;
+        background: transparent;
+        text-align: left;
+        color: var(--lab-ink);
         transition: background-color 0.2s ease;
         display: block;
+        width: 100%;
+        cursor: pointer;
       }
 
       .nav-item:hover,
       .nav-item.active {
-        background-color: #e8f4f1;
-        color: #0f766e;
+        background-color: color-mix(in srgb, var(--lab-accent) 12%, transparent);
+        color: var(--lab-accent);
         font-weight: 600;
       }
 
       .settings-content {
-        background: white;
-        border: 1px solid #ddd;
+        background: var(--lab-surface-strong);
+        border: 1px solid var(--lab-line);
         border-radius: 8px;
         padding: 2rem;
       }
@@ -145,37 +149,11 @@ import { Component } from '@angular/core';
       .settings-group input {
         width: 100%;
         padding: 0.75rem;
-        border: 1px solid #ddd;
+        border: 1px solid var(--lab-line);
         border-radius: 4px;
         font-size: 1rem;
       }
 
-      .btn {
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: background-color 0.2s ease;
-      }
-
-      .btn-primary {
-        background-color: #0f766e;
-        color: white;
-      }
-
-      .btn-primary:hover {
-        background-color: #115e59;
-      }
-
-      .btn-secondary {
-        background-color: #e8e8e8;
-        color: #333;
-      }
-
-      .btn-secondary:hover {
-        background-color: #d0d0d0;
-      }
 
       @media (max-width: 768px) {
         .settings-layout {
