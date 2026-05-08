@@ -1,5 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
 import { SeoMetadata, SeoService } from '../../core/services/seo.service';
 
@@ -20,11 +27,18 @@ import { SeoMetadata, SeoService } from '../../core/services/seo.service';
           </a>
 
           <nav class="nav" aria-label="Primary">
-            <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">
+            <a
+              routerLink="/"
+              routerLinkActive="is-active"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
               Home
             </a>
             <a routerLink="/book" routerLinkActive="is-active">Book</a>
             <a routerLink="/kit" routerLinkActive="is-active">Kit</a>
+            <a routerLink="/dashboard" routerLinkActive="is-active">Dashboard</a>
+            <a routerLink="/workflows" routerLinkActive="is-active">Workflows</a>
+            <a routerLink="/settings" routerLinkActive="is-active">Settings</a>
           </nav>
         </div>
       </header>
@@ -121,7 +135,9 @@ import { SeoMetadata, SeoService } from '../../core/services/seo.service';
         text-decoration: none;
         color: var(--lab-ink-soft);
         font-weight: 600;
-        transition: background-color 0.2s ease, color 0.2s ease;
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease;
       }
 
       .nav a:hover,
@@ -165,9 +181,9 @@ import { SeoMetadata, SeoService } from '../../core/services/seo.service';
           justify-content: space-between;
         }
       }
-    `
+    `,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SiteShellComponent implements OnInit {
   private readonly activatedRoute = inject(ActivatedRoute);
@@ -187,7 +203,7 @@ export class SiteShellComponent implements OnInit {
           }
 
           return route.snapshot.data['seo'] as SeoMetadata | undefined;
-        })
+        }),
       )
       .subscribe((metadata) => {
         if (metadata) {

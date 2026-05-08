@@ -109,6 +109,21 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./modules/kit/kit-page.component').then((m) => m.KitPageComponent),
       },
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('@features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+      },
+      {
+        path: 'workflows',
+        loadComponent: () =>
+          import('@features/workflows/workflows.component').then((m) => m.WorkflowsComponent),
+      },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('@features/settings/settings.component').then((m) => m.SettingsComponent),
+      },
     ],
   },
   {

@@ -54,6 +54,10 @@ src/
 │   │   ├── navigation/                # Header/nav components
 │   │   └── sidebar/                   # Sidebar components (if needed)
 │   │
+│   ├── state/                         # Global signal-based app state
+│   │   ├── app.state.ts               # Global state interfaces + initial state
+│   │   └── app.store.ts               # Writable signals, selectors, and updaters
+│   │
 │   └── app.ts                         # Root component
 │
 ├── styles/                            # Global SCSS
@@ -108,6 +112,14 @@ src/
 - Global reset & base styles: typography, links, forms
 - All imported into root `styles.scss`
 
+#### 6. **Global State** (Angular Signals)
+
+- Uses Angular Signals for lightweight app-wide state
+- Root store lives under `src/app/state/`
+- State slices: `ui`, `auth`, `app`
+- Exposes computed selectors and imperative updaters
+- **Rule**: Keep business state transitions inside the store, not scattered across components
+
 ### Import Path Aliases
 
 TypeScript path aliases are configured in `tsconfig.json`:
@@ -157,6 +169,10 @@ import { LandingPageComponent } from '@features/landing/landing-page.component';
 
 ```text
 src/app/
+  state/
+    app.state.ts
+    app.store.ts
+
   core/
     services/
       landing-content.service.ts
@@ -200,6 +216,101 @@ src/app/
   app.routes.ts
   app.ts
 ```
+
+## Global State Management (Signals)
+
+This project uses **Angular Signals** for the initial global state layer. Signals fit the current standalone, feature-first Angular architecture well and avoid introducing unnecessary framework overhead for the MVP.
+
+### Chosen Pattern
+
+- `app.state.ts` defines the global state contracts and initial state
+- `app.store.ts` owns the writable signal, computed selectors, and updaters
+- The store is provided at the root in `app.config.ts`
+- Features inject the store directly with `inject(AppStore)`
+
+### State Folder Structure
+
+```text
+src/app/state/
+  app.state.ts
+  app.store.ts
+```
+
+### State Shape
+
+The base store includes three application-wide slices:
+
+- `ui`: sidebar open/closed state, theme
+- `auth`: authentication status and placeholder user metadata
+- `app`: global loading flag and notifications list
+
+### How To Read State
+
+Inject the store into a standalone component and read computed signals directly.
+
+```typescript
+import { Component, inject } from '@angular/core';
+import { AppStore } from '@app/state/app.store';
+
+@Component({
+  standalone: true,
+  template: `<p>Theme: {{ store.theme() }}</p>`,
+})
+export class ExampleComponent {
+  readonly store = inject(AppStore);
+}
+```
+
+### How To Update State
+
+Call store updaters from event handlers or feature orchestration code.
+
+```typescript
+toggleTheme(): void {
+  this.store.setTheme('dark');
+}
+
+seedDemo(): void {
+  this.store.seedDashboardDemo();
+}
+```
+
+Available updaters in the initial store include:
+
+- `toggleSidebar()`
+- `setTheme(theme)`
+- `setAuthenticated(user)`
+- `logout()`
+- `setLoading(isLoading)`
+- `addNotification(message, level)`
+- `markNotificationRead(id)`
+- `clearNotifications()`
+
+### How To Inject The Store
+
+Use Angular's `inject()` API inside standalone components, directives, or services.
+
+```typescript
+readonly store = inject(AppStore);
+```
+
+The root provider is configured in `app.config.ts`, so no module-based setup is required.
+
+### Best Practices
+
+- Keep the writable signal private and expose computed selectors publicly
+- Prefer focused updaters over mutating state directly in components
+- Treat components as consumers of state, not owners of global state transitions
+- Add derived values as `computed()` selectors when multiple consumers need them
+- Keep feature-local transient UI state in the feature when it does not need app-wide visibility
+
+### Anti-Patterns To Avoid
+
+- Do not add React state libraries such as Zustand, Jotai, or Redux Toolkit
+- Do not mutate the store state object directly outside the store
+- Do not move one-off local form fields into global state without a real cross-feature need
+- Do not reintroduce module-based NgRx setup unless the project explicitly scales into that need
+- Do not duplicate derived values in components when a computed selector can own them centrally
 
 ## Run locally
 
