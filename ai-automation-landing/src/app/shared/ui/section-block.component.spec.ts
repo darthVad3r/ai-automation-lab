@@ -40,22 +40,25 @@ describe('SectionBlockComponent', () => {
   });
 
   it('conditionally renders optional fields and variant class', () => {
-    const fixture = TestBed.createComponent(HostComponent);
-    fixture.detectChanges();
+    const defaultFixture = TestBed.createComponent(HostComponent);
+    defaultFixture.detectChanges();
 
-    const el = fixture.nativeElement as HTMLElement;
-    const section = el.querySelector('.section') as HTMLElement;
-    expect(section.classList.contains('light')).toBe(true);
-    expect(el.querySelector('.section__eyebrow')).toBeNull();
-    expect(el.querySelector('.section__subtitle')).toBeNull();
+    const defaultEl = defaultFixture.nativeElement as HTMLElement;
+    const defaultSection = defaultEl.querySelector('.section') as HTMLElement;
+    expect(defaultSection.classList.contains('light')).toBe(true);
+    expect(defaultEl.querySelector('.section__eyebrow')).toBeNull();
+    expect(defaultEl.querySelector('.section__subtitle')).toBeNull();
 
-    fixture.componentInstance.eyebrow = 'Why this matters';
-    fixture.componentInstance.subtitle = 'Supporting text';
-    fixture.componentInstance.variant = 'muted';
-    fixture.detectChanges();
+    const populatedFixture = TestBed.createComponent(HostComponent);
+    populatedFixture.componentInstance.eyebrow = 'Why this matters';
+    populatedFixture.componentInstance.subtitle = 'Supporting text';
+    populatedFixture.componentInstance.variant = 'muted';
+    populatedFixture.detectChanges();
 
-    expect(section.classList.contains('muted')).toBe(true);
-    expect(el.querySelector('.section__eyebrow')?.textContent).toContain('Why this matters');
-    expect(el.querySelector('.section__subtitle')?.textContent).toContain('Supporting text');
+    const populatedEl = populatedFixture.nativeElement as HTMLElement;
+    const populatedSection = populatedEl.querySelector('.section') as HTMLElement;
+    expect(populatedSection.classList.contains('muted')).toBe(true);
+    expect(populatedEl.querySelector('.section__eyebrow')?.textContent).toContain('Why this matters');
+    expect(populatedEl.querySelector('.section__subtitle')?.textContent).toContain('Supporting text');
   });
 });
