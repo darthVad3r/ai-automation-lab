@@ -1,11 +1,15 @@
+import { TestBed } from '@angular/core/testing';
 import { AppStore } from './app.store';
 
 describe('AppStore', () => {
   let store: AppStore;
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [AppStore],
+    });
     document.documentElement.removeAttribute('data-theme');
-    store = new AppStore();
+    store = TestBed.inject(AppStore);
   });
 
   it('should toggle sidebarOpen state', () => {
