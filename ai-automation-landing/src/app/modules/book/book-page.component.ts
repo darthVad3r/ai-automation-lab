@@ -3,6 +3,7 @@ import { LandingContentService } from '../../core/services/landing-content.servi
 import { CtaButtonComponent } from '../../shared/ui/cta-button.component';
 import { FeatureCardComponent } from '../../shared/ui/feature-card.component';
 
+/** Booking-focused conversion route for consultation calls. */
 @Component({
   selector: 'app-book-page',
   standalone: true,

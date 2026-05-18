@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 
+/** Pricing model used by pricing-focused UI components. */
 export interface PricingPlan {
   name: string;
   price: string;
@@ -10,11 +11,13 @@ export interface PricingPlan {
   highlighted?: boolean;
 }
 
+/** Provides all editable landing-page content and offer metadata. */
 @Injectable({ providedIn: 'root' })
 export class LandingContentService {
   readonly bookingUrl = 'https://calendly.com/your-handle/discovery-call';
   readonly kitCheckoutUrl = 'https://checkout.example.com/ai-agent-starter-kit';
 
+  /** Returns the core problem statements shown on the landing page. */
   getProblemPoints(): string[] {
     return [
       'Manual workflows slow down delivery and create bottlenecks.',
@@ -23,6 +26,7 @@ export class LandingContentService {
     ];
   }
 
+  /** Returns the core solution statements shown on the landing page. */
   getSolutionPoints(): string[] {
     return [
       'Production-ready AI agent workflows aligned to your process.',
@@ -31,6 +35,7 @@ export class LandingContentService {
     ];
   }
 
+  /** Returns pricing plans rendered in the reusable pricing tier UI. */
   getPricingPlans(): PricingPlan[] {
     return [
       {
@@ -73,6 +78,7 @@ export class LandingContentService {
     ];
   }
 
+  /** Returns feature bullets used in the starter kit section. */
   getStarterKitPoints(): string[] {
     return [
       'Angular-ready starter project structure',
@@ -81,6 +87,7 @@ export class LandingContentService {
     ];
   }
 
+  /** Returns testimonial placeholders until production testimonials are added. */
   getTestimonials(): Array<{ name: string; role: string; quote: string }> {
     return [
       {

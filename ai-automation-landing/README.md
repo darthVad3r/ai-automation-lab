@@ -18,11 +18,52 @@ Single-page Angular landing site for:
 - Fast-load route-level lazy loading
 - No backend required
 
+## High-level architecture
+
+- **Shell-first routing:** `SiteShellComponent` provides shared navigation/footer and hosts route content.
+- **Feature modules by route:** page-level components live in `src/app/modules/*` and are lazy-loaded from `app.routes.ts`.
+- **Core services:** centralized app content (`LandingContentService`) and SEO application (`SeoService`).
+- **Reusable UI layer:** shared presentational components in `src/app/shared/ui/*` keep page templates consistent.
+- **Route-driven SEO:** each route provides metadata via `data.seo`; shell applies it on navigation.
+
 ## Routes
 
 - `/` → Landing page
 - `/book` → Calendar link page
 - `/kit` → Product checkout link page
+
+## API reference summary
+
+### Core services
+
+| API | Type | Summary |
+| --- | --- | --- |
+| `LandingContentService` | Service | Source of page copy, pricing plans, testimonials, and outbound URLs. |
+| `SeoService` | Service | Applies title/meta/canonical tags and JSON-LD structured data to the document head. |
+| `PricingPlan` | Interface | Data contract used by pricing components for plan rendering. |
+| `SeoMetadata` | Interface | Route-level SEO contract consumed by the shell and SEO service. |
+
+### Route and config APIs
+
+| API | Type | Summary |
+| --- | --- | --- |
+| `routes` | `Routes` constant | Defines lazy-loaded routes and per-route SEO metadata. |
+| `appConfig` | `ApplicationConfig` constant | Registers router providers and application-wide dependencies. |
+
+### UI and page component APIs
+
+| API | Type | Summary |
+| --- | --- | --- |
+| `SiteShellComponent` | Layout component | Shared shell applying SEO metadata and rendering navigation/footer. |
+| `LandingPageComponent` | Page component | Main marketing page assembling all shared sections. |
+| `BookPageComponent` | Page component | Focused call-booking conversion page. |
+| `KitPageComponent` | Page component | Product page for the starter kit checkout flow. |
+| `CtaButtonComponent` | UI component | Internal/external CTA button primitive. |
+| `FeatureCardComponent` | UI component | Reusable feature/benefit card. |
+| `SectionBlockComponent` | UI component | Section wrapper with heading/subtitle/variant support. |
+| `PricingTierComponent` | UI component | Primary pricing plan card used on landing page. |
+| `PricingCardComponent` | UI component | Alternate pricing card variant for plan presentation. |
+| `TestimonialCardComponent` | UI component | Testimonial display card for quote, author, and role. |
 
 ## Project structure (high level)
 

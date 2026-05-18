@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NgClass, NgIf } from '@angular/common';
 
+/** Section wrapper with shared heading, subtitle, and background variants. */
 @Component({
   selector: 'app-section-block',
   standalone: true,

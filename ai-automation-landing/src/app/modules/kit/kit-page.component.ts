@@ -3,6 +3,7 @@ import { LandingContentService } from '../../core/services/landing-content.servi
 import { CtaButtonComponent } from '../../shared/ui/cta-button.component';
 import { FeatureCardComponent } from '../../shared/ui/feature-card.component';
 
+/** Product route for promoting and linking to the starter kit checkout. */
 @Component({
   selector: 'app-kit-page',
   standalone: true,

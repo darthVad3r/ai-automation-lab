@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+/** Presentation card for short feature or benefit content blocks. */
 @Component({
   selector: 'app-feature-card',
   standalone: true,

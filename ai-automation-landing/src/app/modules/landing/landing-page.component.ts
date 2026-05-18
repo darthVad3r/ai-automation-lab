@@ -6,6 +6,7 @@ import { PricingTierComponent } from '../../shared/ui/pricing-tier.component';
 import { SectionBlockComponent } from '../../shared/ui/section-block.component';
 import { TestimonialCardComponent } from '../../shared/ui/testimonial-card.component';
 
+/** Main marketing route composing all reusable landing sections. */
 @Component({
   selector: 'app-landing-page',
   standalone: true,

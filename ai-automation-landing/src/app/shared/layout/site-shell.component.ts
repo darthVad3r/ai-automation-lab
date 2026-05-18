@@ -3,6 +3,7 @@ import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, Ro
 import { filter, map, startWith } from 'rxjs';
 import { SeoMetadata, SeoService } from '../../core/services/seo.service';
 
+/** Shared shell that renders global navigation, footer, and route content. */
 @Component({
   selector: 'app-site-shell',
   standalone: true,
@@ -174,6 +175,7 @@ export class SiteShellComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly seoService = inject(SeoService);
 
+  /** Syncs route-provided SEO metadata on each navigation event. */
   ngOnInit(): void {
     this.router.events
       .pipe(

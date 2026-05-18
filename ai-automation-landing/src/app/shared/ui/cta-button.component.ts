@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 
+/** Reusable CTA link button supporting internal and external navigation. */
 @Component({
   selector: 'app-cta-button',
   standalone: true,

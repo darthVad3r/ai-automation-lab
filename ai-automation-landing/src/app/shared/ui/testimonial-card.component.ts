@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
+/** Reusable testimonial card for quote, author, and role content. */
 @Component({
   selector: 'app-testimonial-card',
   standalone: true,

@@ -3,6 +3,7 @@ import { NgClass } from '@angular/common';
 import { CtaButtonComponent } from './cta-button.component';
 import { PricingPlan } from '../../core/services/landing-content.service';
 
+/** Legacy pricing card variant that renders a single pricing plan. */
 @Component({
   selector: 'app-pricing-card',
   standalone: true,

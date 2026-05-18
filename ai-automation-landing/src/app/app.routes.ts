@@ -83,6 +83,7 @@ const kitSeo: SeoMetadata = {
   ]
 };
 
+/** Route tree for the public marketing, booking, and kit pages. */
 export const routes: Routes = [
   {
     path: '',

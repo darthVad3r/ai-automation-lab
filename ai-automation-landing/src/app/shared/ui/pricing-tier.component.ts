@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { PricingPlan } from '../../core/services/landing-content.service';
 import { CtaButtonComponent } from './cta-button.component';
 
+/** Primary pricing card component used in the landing pricing grid. */
 @Component({
   selector: 'app-pricing-tier',
   standalone: true,
