@@ -36,7 +36,7 @@ Verify your tooling:
 node -v
 npm -v
 git --version
-ng version
+npx ng version
 ```
 
 ### Installation
@@ -59,7 +59,8 @@ npm ci
 
 The application currently runs without required environment variables for local development.
 
-If you introduce environment-specific settings, use Angular environment files in `ai-automation-landing/src/environments/` and document new variables in this README and the related PR.
+This repository does not currently include `ai-automation-landing/src/environments/`.
+If you introduce environment-specific settings, create that directory and configure Angular file replacements as needed, then document new variables in this README and the related PR.
 
 For repository automation workflows, these GitHub settings may be required depending on workflow usage:
 
@@ -237,7 +238,7 @@ npm run build
 - Use standalone Angular components and prefer `ChangeDetectionStrategy.OnPush` for feature/page components.
 - Keep styling maintainable and purposeful; use SCSS for essential layout and component presentation.
 - For accessibility, correctly associate labels with form controls using `for`/`id` or wrapping.
-- Never commit machine-local artifacts (for example `.vs/` workspace files) or secrets.
+- Do not add or modify machine-local artifacts (for example `.vs/` workspace files) in feature PRs, and never commit secrets.
 
 ---
 
