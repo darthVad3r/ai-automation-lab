@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: ["main"]
 
+defaults:
+  run:
+    working-directory: ai-automation-landing
+
 jobs:
   install:
     name: Install & Cache Dependencies
@@ -20,13 +24,14 @@ jobs:
         with:
           node-version: "lts/*"
           cache: "npm"
+          cache-dependency-path: ai-automation-landing/package-lock.json
 
       - name: Cache node_modules
         id: cache-node-modules-install
         uses: actions/cache@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          path: ai-automation-landing/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('ai-automation-landing/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
@@ -49,8 +54,8 @@ jobs:
         id: cache-node-modules-lint
         uses: actions/cache@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          path: ai-automation-landing/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('ai-automation-landing/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
@@ -73,8 +78,8 @@ jobs:
         id: cache-node-modules-typecheck
         uses: actions/cache@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          path: ai-automation-landing/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('ai-automation-landing/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
@@ -97,8 +102,8 @@ jobs:
         id: cache-node-modules-test
         uses: actions/cache@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          path: ai-automation-landing/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('ai-automation-landing/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
@@ -109,7 +114,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage
-          path: coverage
+          path: ai-automation-landing/coverage
 
   build:
     name: Build
@@ -126,8 +131,8 @@ jobs:
         id: cache-node-modules-build
         uses: actions/cache@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          path: ai-automation-landing/node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('ai-automation-landing/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
@@ -138,4 +143,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: dist
+          path: ai-automation-landing/dist
