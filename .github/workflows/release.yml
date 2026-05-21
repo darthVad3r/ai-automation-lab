@@ -32,6 +32,9 @@ jobs:
     name: Attach Build Artifacts
     runs-on: ubuntu-latest
     needs: release
+    defaults:
+      run:
+        working-directory: ai-automation-landing
 
     steps:
       - uses: actions/checkout@v4
@@ -45,4 +48,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist
-          path: dist
+          path: ai-automation-landing/dist/ai-automation-landing/browser

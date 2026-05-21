@@ -13,6 +13,9 @@ jobs:
   build:
     name: Build SPA
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ai-automation-landing
 
     steps:
       - name: Checkout
@@ -32,7 +35,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: ai-automation-landing/dist/ai-automation-landing/browser
 
   deploy:
     name: Deploy to GitHub Pages

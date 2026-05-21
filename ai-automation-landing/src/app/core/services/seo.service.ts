@@ -30,6 +30,8 @@ export class SeoService {
       this.setCanonicalUrl(metadata.canonicalUrl);
     }
 
+    this.clearStructuredData();
+
     metadata.structuredData?.forEach((entry) => {
       this.setStructuredData(entry.id, entry.schema);
     });
@@ -47,9 +49,7 @@ export class SeoService {
   }
 
   setCanonicalUrl(url: string): void {
-    let link = this.document.querySelector(
-      'link[rel="canonical"]'
-    ) as HTMLLinkElement | null;
+    let link = this.document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
 
     if (!link) {
       link = this.document.createElement('link');
@@ -73,5 +73,10 @@ export class SeoService {
     script.type = 'application/ld+json';
     script.text = JSON.stringify(schema);
     this.document.head.appendChild(script);
+  }
+
+  private clearStructuredData(): void {
+    const scripts = this.document.querySelectorAll('script[id^="structured-data-"]');
+    scripts.forEach((script) => script.remove());
   }
 }

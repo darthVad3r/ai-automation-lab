@@ -1,26 +1,24 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-cta-button',
   standalone: true,
-  imports: [RouterLink, NgIf],
+  imports: [RouterLink],
   template: `
-    <a
-      *ngIf="external; else internalLink"
-      class="cta"
-      [href]="link"
-      [attr.aria-label]="label"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      {{ label }}
-    </a>
-
-    <ng-template #internalLink>
+    @if (external) {
+      <a
+        class="cta"
+        [href]="link"
+        [attr.aria-label]="label"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        {{ label }}
+      </a>
+    } @else {
       <a class="cta" [routerLink]="link" [attr.aria-label]="label">{{ label }}</a>
-    </ng-template>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
@@ -43,11 +41,13 @@ import { NgIf } from '@angular/common';
         background: #1f2937;
         border-color: #1f2937;
       }
-    `
-  ]
+    `,
+  ],
 })
 export class CtaButtonComponent {
   @Input({ required: true }) label = '';
+
   @Input({ required: true }) link = '';
+
   @Input() external = false;
 }

@@ -1,4 +1,3 @@
-
 You are an expert in TypeScript, Angular, and scalable web application development. You write functional, maintainable, performant, and accessible code following Angular and TypeScript best practices.
 
 ## TypeScript Best Practices
@@ -10,10 +9,10 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 ## Angular Best Practices
 
 - Always use standalone components over NgModules
-- Must NOT set `standalone: true` inside Angular decorators. It's the default in Angular v20+.
+- Standalone is the project standard. Keeping `standalone: true` explicitly in decorators is acceptable in this repository for clarity and tooling consistency.
 - Use signals for state management
 - Implement lazy loading for feature routes
-- Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
+- Prefer host bindings/listeners in the `host` object of `@Component`/`@Directive` for new code. Existing `@HostBinding`/`@HostListener` usage is acceptable unless you are already refactoring that file.
 - Use `NgOptimizedImage` for all static images.
   - `NgOptimizedImage` does not work for inline base64 images.
 
@@ -25,13 +24,12 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 ### Components
 
 - Keep components small and focused on a single responsibility
-- Use `input()` and `output()` functions instead of decorators
+- Prefer `input()` and `output()` for new code when practical. `@Input` and `@Output` are acceptable and currently common in this codebase.
 - Use `computed()` for derived state
 - Set `changeDetection: ChangeDetectionStrategy.OnPush` in `@Component` decorator
 - Prefer inline templates for small components
 - Prefer Reactive forms instead of Template-driven ones
-- Do NOT use `ngClass`, use `class` bindings instead
-- Do NOT use `ngStyle`, use `style` bindings instead
+- Prefer `class` and `style` bindings for simple cases. `ngClass`/`ngStyle` are acceptable when they keep templates clearer.
 - When using external templates/styles, use paths relative to the component TS file.
 
 ## State Management
