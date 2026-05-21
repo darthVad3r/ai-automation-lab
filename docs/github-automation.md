@@ -101,7 +101,8 @@ Required repository configuration:
 
 - Set repository variable `GH_PROJECT_URL` to the target GitHub Project URL.
 - Set repository secret `ADD_TO_PROJECT_PAT` with project write access.
-- If either value is missing, project auto-add will fail fast with a clear workflow error.
+- If `GH_PROJECT_URL` is missing or empty, the project auto-add job is skipped.
+- If `GH_PROJECT_URL` is set but `ADD_TO_PROJECT_PAT` is missing, the workflow fails fast with a clear error.
 
 ## CODEOWNERS
 
