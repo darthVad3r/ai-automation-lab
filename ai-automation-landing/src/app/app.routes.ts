@@ -104,6 +104,13 @@ const settingsSeo: SeoMetadata = {
   canonicalUrl: 'https://example.com/settings',
 };
 
+const notFoundSeo: SeoMetadata = {
+  title: '404 | AI Automation Lab',
+  description:
+    'The requested page could not be found. Return to AI Automation Lab to continue exploring workflows and resources.',
+  canonicalUrl: 'https://example.com/404',
+};
+
 export const routes: Routes = [
   {
     path: '',
@@ -151,10 +158,15 @@ export const routes: Routes = [
         loadComponent: () =>
           import('@features/settings/settings.component').then((m) => m.SettingsComponent),
       },
+      {
+        path: '**',
+        title: notFoundSeo.title,
+        data: { seo: notFoundSeo },
+        loadComponent: () =>
+          import('./modules/not-found/not-found-page.component').then(
+            (m) => m.NotFoundPageComponent
+          ),
+      },
     ],
-  },
-  {
-    path: '**',
-    redirectTo: '',
   },
 ];

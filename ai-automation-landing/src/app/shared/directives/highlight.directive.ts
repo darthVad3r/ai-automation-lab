@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 
 /**
  * Highlight Directive placeholder
@@ -6,18 +6,21 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
  */
 @Directive({
   selector: '[appHighlight]',
-  standalone: true,
+  host: {
+    '(mouseenter)': 'onMouseEnter()',
+    '(mouseleave)': 'onMouseLeave()',
+  },
 })
 export class HighlightDirective {
   @Input() highlightColor = 'yellow';
 
-  constructor(private el: ElementRef) {}
+  constructor(private readonly el: ElementRef<HTMLElement>) {}
 
-  @HostListener('mouseenter') onMouseEnter() {
+  onMouseEnter() {
     this.el.nativeElement.style.backgroundColor = this.highlightColor;
   }
 
-  @HostListener('mouseleave') onMouseLeave() {
-    this.el.nativeElement.style.backgroundColor = null;
+  onMouseLeave() {
+    this.el.nativeElement.style.backgroundColor = '';
   }
 }
