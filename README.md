@@ -86,6 +86,16 @@ npm test
 npm run build
 ```
 
+### Vercel Deployment (Optional)
+
+If you deploy this app with Vercel, use these project settings to avoid 404 errors on Angular client routes:
+
+1. Set Root Directory to `ai-automation-landing`.
+2. Set Install Command to `npm ci`.
+3. Set Build Command to `npm run build`.
+4. Set Output Directory to `dist/ai-automation-landing/browser`.
+5. Keep `ai-automation-landing/vercel.json` committed so direct route requests (for example `/login` or `/dashboard`) rewrite to `index.html`.
+
 ## Folder Structure Explanation
 
 ```text
