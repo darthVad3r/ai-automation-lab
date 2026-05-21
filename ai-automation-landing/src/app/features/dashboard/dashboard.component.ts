@@ -146,7 +146,7 @@ import { AppStore } from '@app/state/app.store';
       .action-button--primary {
         background: var(--lab-color-primary);
         border-color: var(--lab-color-primary);
-        color: var(--lab-surface);
+        color: var(--lab-on-primary);
       }
 
       .state-panel {

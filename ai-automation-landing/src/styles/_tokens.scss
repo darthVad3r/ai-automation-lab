@@ -7,6 +7,7 @@
   --lab-color-primary-strong: #2e46cc;
   --lab-color-accent-cyan: #00c2ff;
   --lab-color-accent-lime: #a3e635;
+  --lab-on-primary: #ffffff;
 
   /* Surfaces and text */
   --lab-bg: #f6f8fc;
@@ -66,6 +67,8 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
 
+  --lab-on-primary: #ffffff;
+
   --lab-bg: #0b1220;
   --lab-surface: #121a2b;
   --lab-surface-muted: #1a2438;
@@ -87,6 +90,8 @@
 @media (prefers-color-scheme: dark) {
   :root[data-theme='system'] {
     color-scheme: dark;
+
+    --lab-on-primary: #ffffff;
 
     --lab-bg: #0b1220;
     --lab-surface: #121a2b;
@@ -110,6 +115,8 @@
 @media (prefers-color-scheme: light) {
   :root[data-theme='system'] {
     color-scheme: light;
+
+    --lab-on-primary: #ffffff;
 
     --lab-bg: #f6f8fc;
     --lab-surface: #ffffff;
