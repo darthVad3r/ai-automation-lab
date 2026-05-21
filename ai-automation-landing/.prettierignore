@@ -1,0 +1,6 @@
+coverage
+dist
+out-tsc
+node_modules
+.husky/_
+.vs
