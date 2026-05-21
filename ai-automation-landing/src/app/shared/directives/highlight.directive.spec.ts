@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { HighlightDirective } from './highlight.directive';
 
 @Component({
+  standalone: true,
   template: ` <p appHighlight [highlightColor]="highlightColor">Directive host</p> `,
   imports: [HighlightDirective],
 })

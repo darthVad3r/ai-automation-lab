@@ -6,6 +6,7 @@ import { Directive, ElementRef, Input } from '@angular/core';
  */
 @Directive({
   selector: '[appHighlight]',
+  standalone: true,
   host: {
     '(mouseenter)': 'onMouseEnter()',
     '(mouseleave)': 'onMouseLeave()',
