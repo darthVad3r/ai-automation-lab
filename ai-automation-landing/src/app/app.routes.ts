@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from '@core/guards/auth.guard';
 import { SeoMetadata } from '@core/services/seo.service';
 import { SiteShellComponent } from '@shared/layout/site-shell.component';
 
@@ -83,6 +84,13 @@ const kitSeo: SeoMetadata = {
   ],
 };
 
+const loginSeo: SeoMetadata = {
+  title: 'Login | AI Automation Lab',
+  description:
+    'Sign in to access protected AI Automation Lab routes, workflows, and account settings.',
+  canonicalUrl: 'https://example.com/login',
+};
+
 const dashboardSeo: SeoMetadata = {
   title: 'Dashboard | AI Automation Lab',
   description:
@@ -138,9 +146,17 @@ export const routes: Routes = [
           import('./modules/kit/kit-page.component').then((m) => m.KitPageComponent),
       },
       {
+        path: 'login',
+        title: loginSeo.title,
+        data: { seo: loginSeo },
+        loadComponent: () =>
+          import('./modules/login/login-page.component').then((m) => m.LoginPageComponent),
+      },
+      {
         path: 'dashboard',
         title: dashboardSeo.title,
         data: { seo: dashboardSeo },
+        canActivate: [AuthGuard],
         loadComponent: () =>
           import('@features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
@@ -148,6 +164,7 @@ export const routes: Routes = [
         path: 'workflows',
         title: workflowsSeo.title,
         data: { seo: workflowsSeo },
+        canActivate: [AuthGuard],
         loadComponent: () =>
           import('@features/workflows/workflows.component').then((m) => m.WorkflowsComponent),
       },
@@ -155,6 +172,7 @@ export const routes: Routes = [
         path: 'settings',
         title: settingsSeo.title,
         data: { seo: settingsSeo },
+        canActivate: [AuthGuard],
         loadComponent: () =>
           import('@features/settings/settings.component').then((m) => m.SettingsComponent),
       },

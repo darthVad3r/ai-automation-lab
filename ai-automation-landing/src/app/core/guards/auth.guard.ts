@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, UrlTree } from '@angular/router';
+
+import { AuthService } from '../services/auth.service';
 
 /**
  * Auth Guard placeholder
@@ -9,11 +11,16 @@ import { CanActivate, Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router
+  ) {}
 
-  canActivate(): boolean {
-    // Add authentication logic here
-    // Return true to allow navigation, false to block
-    return true;
+  canActivate(): boolean | UrlTree {
+    if (this.authService.isAuthenticated()) {
+      return true;
+    }
+
+    return this.router.createUrlTree(['/login']);
   }
 }

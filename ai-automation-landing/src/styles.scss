@@ -1,5 +1,5 @@
 // Import global styles and variables
-@import './styles/global';
+@use './styles/global';
 
 :root,
 :root[data-theme='light'] {
