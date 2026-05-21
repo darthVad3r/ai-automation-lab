@@ -12,7 +12,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Must NOT set `standalone: true` inside Angular decorators. It's the default in Angular v20+.
 - Use signals for state management
 - Implement lazy loading for feature routes
-- Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
+- Prefer host bindings/listeners in the `host` object of `@Component`/`@Directive` for new code. Existing `@HostBinding`/`@HostListener` usage is acceptable unless you are already refactoring that file.
 - Use `NgOptimizedImage` for all static images.
   - `NgOptimizedImage` does not work for inline base64 images.
 
@@ -29,8 +29,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Set `changeDetection: ChangeDetectionStrategy.OnPush` in `@Component` decorator
 - Prefer inline templates for small components
 - Prefer Reactive forms instead of Template-driven ones
-- Do NOT use `ngClass`, use `class` bindings instead
-- Do NOT use `ngStyle`, use `style` bindings instead
+- Prefer `class` and `style` bindings for simple cases. `ngClass`/`ngStyle` are acceptable when they keep templates clearer.
 - When using external templates/styles, use paths relative to the component TS file.
 
 ## State Management
