@@ -1,5 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
+import {
+  DomSanitizer,
+  SafeHtml,
+  SafeResourceUrl,
+  SafeScript,
+  SafeStyle,
+  SafeUrl,
+} from '@angular/platform-browser';
 
 /**
  * Safe Pipe placeholder
@@ -13,11 +20,11 @@ export class SafePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {}
 
   transform(
-    value: string,
+    value: string | null | undefined,
     type: 'html' | 'url' | 'style' | 'script' | 'resource' = 'html'
-  ): SafeHtml | SafeUrl | SafeResourceUrl {
-    if (!value) {
-      return value;
+  ): SafeHtml | SafeUrl | SafeResourceUrl | SafeStyle | SafeScript | null {
+    if (value == null) {
+      return null;
     }
 
     switch (type) {
@@ -25,10 +32,12 @@ export class SafePipe implements PipeTransform {
         return this.sanitizer.bypassSecurityTrustHtml(value);
       case 'url':
         return this.sanitizer.bypassSecurityTrustUrl(value);
+      case 'style':
+        return this.sanitizer.bypassSecurityTrustStyle(value);
+      case 'script':
+        return this.sanitizer.bypassSecurityTrustScript(value);
       case 'resource':
         return this.sanitizer.bypassSecurityTrustResourceUrl(value);
-      default:
-        return this.sanitizer.sanitize(1, value) || value;
     }
   }
 }

@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   ActivatedRoute,
   NavigationEnd,
@@ -192,11 +193,14 @@ export class SiteShellComponent implements OnInit {
 
   private readonly seoService = inject(SeoService);
 
+  private readonly destroyRef = inject(DestroyRef);
+
   ngOnInit(): void {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
         startWith(null),
+        takeUntilDestroyed(this.destroyRef),
         map(() => {
           let route = this.activatedRoute;
 
