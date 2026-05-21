@@ -188,6 +188,7 @@ ai-automation-lab/
 ### Branching Strategy
 
 - Create all work on a short-lived branch from `main`.
+- Open pull requests targeting `main` unless maintainers explicitly request a different base branch.
 - Prefer descriptive branch names with an issue prefix, for example: `59-readme-enhancement`.
 - Keep branches focused on a single concern to simplify review and rollback.
 
