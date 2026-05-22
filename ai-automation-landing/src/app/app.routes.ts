@@ -122,6 +122,7 @@ export const routes: Routes = [
       },
       {
         path: 'kit',
+        pathMatch: 'full',
         redirectTo: 'kits',
       },
       {

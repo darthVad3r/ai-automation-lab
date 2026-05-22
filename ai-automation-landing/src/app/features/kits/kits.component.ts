@@ -13,6 +13,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
       <div class="kits__table-wrap surface-card surface-card--muted">
         <table>
+          <caption class="kits__caption">
+            Available implementation kits with publication status, version, and last update.
+          </caption>
           <thead>
             <tr>
               <th scope="col">Kit</th>
@@ -66,6 +69,18 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
       .kits__table-wrap {
         overflow-x: auto;
+      }
+
+      .kits__caption {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
       }
     `,
   ],

@@ -37,6 +37,16 @@ describe('routes', () => {
     expect(loadedComponent).toBe(LoginPageComponent);
   });
 
+  it('should redirect legacy /kit path to /kits using full path match', () => {
+    const shellRoute = routes.find((route) => route.path === '');
+    const childRoutes = shellRoute?.children;
+    const legacyKitRoute = childRoutes?.find((route) => route.path === 'kit');
+
+    expect(legacyKitRoute).toBeDefined();
+    expect(legacyKitRoute?.redirectTo).toBe('kits');
+    expect(legacyKitRoute?.pathMatch).toBe('full');
+  });
+
   it('should redirect wildcard child route to not-found', () => {
     const shellRoute = routes.find((route) => route.path === '');
     const childRoutes = shellRoute?.children;

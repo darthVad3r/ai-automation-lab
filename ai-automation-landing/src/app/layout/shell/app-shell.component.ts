@@ -17,7 +17,7 @@ type NavigationItem = {
 };
 
 @Component({
-  selector: 'app-core-shell',
+  selector: 'app-app-shell',
   standalone: true,
   imports: [RouterLink, RouterLinkActive, RouterOutlet],
   template: `
