@@ -1,11 +1,11 @@
-import { Routes } from '@angular/router';
 import { routes } from './app.routes';
 import { AgentsComponent } from './features/agents/agents.component';
+import { LoginPageComponent } from './modules/login/login-page.component';
 
 describe('routes', () => {
   it('should redirect empty child path to dashboard', () => {
     const shellRoute = routes.find((route) => route.path === '');
-    const childRoutes = shellRoute?.children as Routes | undefined;
+    const childRoutes = shellRoute?.children;
     const defaultChildRoute = childRoutes?.find((route) => route.path === '');
 
     expect(defaultChildRoute).toBeDefined();
@@ -15,7 +15,7 @@ describe('routes', () => {
 
   it('should lazy-load agents route component', async () => {
     const shellRoute = routes.find((route) => route.path === '');
-    const childRoutes = shellRoute?.children as Routes | undefined;
+    const childRoutes = shellRoute?.children;
     const agentsRoute = childRoutes?.find((route) => route.path === 'agents');
 
     expect(agentsRoute).toBeDefined();
@@ -25,12 +25,24 @@ describe('routes', () => {
     expect(loadedComponent).toBe(AgentsComponent);
   });
 
-  it('should redirect wildcard child route to dashboard', () => {
+  it('should keep login child route mapped to dedicated login component', async () => {
     const shellRoute = routes.find((route) => route.path === '');
-    const childRoutes = shellRoute?.children as Routes | undefined;
+    const childRoutes = shellRoute?.children;
+    const loginRoute = childRoutes?.find((route) => route.path === 'login');
+
+    expect(loginRoute).toBeDefined();
+
+    const loadedComponent = await loginRoute?.loadComponent?.();
+
+    expect(loadedComponent).toBe(LoginPageComponent);
+  });
+
+  it('should redirect wildcard child route to not-found', () => {
+    const shellRoute = routes.find((route) => route.path === '');
+    const childRoutes = shellRoute?.children;
     const wildcardRoute = childRoutes?.find((route) => route.path === '**');
 
     expect(wildcardRoute).toBeDefined();
-    expect(wildcardRoute?.redirectTo).toBe('dashboard');
+    expect(wildcardRoute?.redirectTo).toBe('not-found');
   });
 });

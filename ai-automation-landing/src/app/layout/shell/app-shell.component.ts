@@ -1,5 +1,15 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
+import { filter, map, startWith } from 'rxjs';
+import { SeoMetadata, SeoService } from '../../core/services/seo.service';
 
 type NavigationItem = {
   label: string;
@@ -91,7 +101,7 @@ type NavigationItem = {
       }
 
       .app-shell__menu-toggle {
-        display: inline-flex;
+        display: none;
         align-items: center;
         justify-content: center;
         min-height: 2.25rem;
@@ -180,6 +190,10 @@ type NavigationItem = {
       }
 
       @media (max-width: 900px) {
+        .app-shell__menu-toggle {
+          display: inline-flex;
+        }
+
         .app-shell__layout {
           grid-template-columns: 1fr;
         }
@@ -223,7 +237,15 @@ type NavigationItem = {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppShellComponent {
+export class AppShellComponent implements OnInit {
+  private readonly activatedRoute = inject(ActivatedRoute);
+
+  private readonly router = inject(Router);
+
+  private readonly seoService = inject(SeoService);
+
+  private readonly destroyRef = inject(DestroyRef);
+
   isSidebarOpen = false;
 
   readonly navigationItems: NavigationItem[] = [
@@ -233,6 +255,29 @@ export class AppShellComponent {
     { label: 'Kits', path: '/kits' },
     { label: 'Settings', path: '/settings' },
   ];
+
+  ngOnInit(): void {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        startWith(null),
+        takeUntilDestroyed(this.destroyRef),
+        map(() => {
+          let route = this.activatedRoute;
+
+          while (route.firstChild) {
+            route = route.firstChild;
+          }
+
+          return route.snapshot.data['seo'] as SeoMetadata | undefined;
+        })
+      )
+      .subscribe((metadata) => {
+        if (metadata) {
+          this.seoService.applyMetadata(metadata);
+        }
+      });
+  }
 
   toggleSidebar(): void {
     this.isSidebarOpen = !this.isSidebarOpen;
