@@ -1,282 +1,152 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { AppTheme } from '@app/state/app.state';
-import { AppStore } from '@app/state/app.store';
+import { KpiCardComponent } from './kpi-card.component';
+import { ProgressSectionComponent } from './progress-section.component';
+import { QuickActionsComponent } from './quick-actions.component';
 
-/**
- * Dashboard Component
- * Main dashboard feature page
- */
+type KpiTone = 'primary' | 'success' | 'info' | 'neutral';
+
+interface KpiItem {
+  readonly label: string;
+  readonly value: string;
+  readonly delta: string;
+  readonly tone: KpiTone;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
+  imports: [KpiCardComponent, ProgressSectionComponent, QuickActionsComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="dashboard-container">
-      <div class="dashboard-header">
-        <div>
-          <h1>Dashboard</h1>
-          <p>Welcome to the Dashboard. This feature now reads and updates global app state.</p>
-        </div>
+    <div class="dashboard">
+      <header class="dashboard__header surface-card">
+        <p class="dashboard__eyebrow">Operations Command Center</p>
+        <h1>Dashboard</h1>
+        <p>
+          Placeholder surface for automation metrics, rollout progress, and quick routing shortcuts.
+        </p>
+      </header>
 
-        <div class="dashboard-actions">
-          <button type="button" class="action-button" (click)="toggleSidebar()">
-            {{ store.sidebarOpen() ? 'Close Sidebar' : 'Open Sidebar' }}
-          </button>
-          <button type="button" class="action-button" (click)="toggleTheme()">
-            Theme: {{ store.theme() }} -> {{ nextTheme() }}
-          </button>
-          <button type="button" class="action-button" (click)="toggleLoading()">
-            {{ store.isLoading() ? 'Stop Loading' : 'Start Loading' }}
-          </button>
-        </div>
-      </div>
-
-      <section class="state-panel" aria-label="Global application state">
-        <div class="state-panel__card">
-          <h2>Global State Snapshot</h2>
-          <dl>
-            <div>
-              <dt>Theme</dt>
-              <dd>{{ store.theme() }}</dd>
-            </div>
-            <div>
-              <dt>Sidebar</dt>
-              <dd>{{ store.sidebarOpen() ? 'Open' : 'Closed' }}</dd>
-            </div>
-            <div>
-              <dt>Authenticated</dt>
-              <dd>{{ store.isAuthenticated() ? 'Yes' : 'No' }}</dd>
-            </div>
-            <div>
-              <dt>User</dt>
-              <dd>{{ store.user().name ?? 'Anonymous' }}</dd>
-            </div>
-            <div>
-              <dt>Loading</dt>
-              <dd>{{ store.isLoading() ? 'Active' : 'Idle' }}</dd>
-            </div>
-            <div>
-              <dt>Unread Notifications</dt>
-              <dd>{{ store.unreadNotificationsCount() }}</dd>
-            </div>
-          </dl>
-
-          <div class="state-panel__actions">
-            <button type="button" class="action-button action-button--primary" (click)="seedDemo()">
-              Seed Demo Session
-            </button>
-            <button
-              type="button"
-              class="action-button"
-              (click)="clearNotifications()"
-              [disabled]="!store.notifications().length"
-            >
-              Clear Notifications
-            </button>
-          </div>
-
-          <p class="state-panel__message">{{ store.activeNotificationMessage() }}</p>
-        </div>
+      <section class="dashboard__kpis" aria-label="Key performance indicators">
+        @for (kpi of kpis; track kpi.label) {
+          <app-kpi-card
+            [label]="kpi.label"
+            [value]="kpi.value"
+            [delta]="kpi.delta"
+            [tone]="kpi.tone"
+          />
+        }
       </section>
 
-      <section class="dashboard-grid">
-        <div class="card">
-          <h2>Workflows</h2>
-          <p>View your active workflows and automation status.</p>
-        </div>
-        <div class="card">
-          <h2>Metrics</h2>
-          <p>Track performance and key metrics.</p>
-        </div>
-        <div class="card">
-          <h2>Alerts</h2>
-          <p>System alerts and notifications.</p>
-        </div>
-        <div class="card">
-          <h2>Recent Activity</h2>
-          <p>Latest changes and activities.</p>
-        </div>
+      <section class="dashboard__main-grid" aria-label="Dashboard progress and shortcuts">
+        <app-progress-section class="dashboard__panel" />
+        <app-quick-actions class="dashboard__panel" />
       </section>
     </div>
   `,
   styles: [
     `
-      .dashboard-container {
-        padding: 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
+      :host {
+        display: block;
       }
 
-      .dashboard-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: start;
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-      }
-
-      .dashboard-actions,
-      .state-panel__actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-      }
-
-      .action-button {
-        border: 1px solid var(--lab-line);
-        background: var(--lab-surface);
-        border-radius: 999px;
-        padding: 0.7rem 1rem;
-        font-weight: 600;
-        color: var(--lab-ink);
-        cursor: pointer;
-      }
-
-      .action-button:hover {
-        border-color: var(--lab-color-primary);
-        color: var(--lab-color-primary);
-      }
-
-      .action-button:disabled {
-        cursor: not-allowed;
-        opacity: 0.55;
-      }
-
-      .action-button--primary {
-        background: var(--lab-color-primary);
-        border-color: var(--lab-color-primary);
-        color: var(--lab-on-primary);
-      }
-
-      .state-panel {
-        margin-bottom: 2rem;
-      }
-
-      .state-panel__card {
-        padding: 1.5rem;
-        border: 1px solid var(--lab-line);
-        border-radius: 12px;
-        background: var(--lab-surface);
-        box-shadow: var(--lab-shadow-2);
-      }
-
-      .state-panel__card h2 {
-        margin-top: 0;
-      }
-
-      dl {
+      .dashboard {
+        width: min(1120px, 100%);
+        margin-inline: auto;
+        padding: var(--lab-space-8) var(--lab-space-4) var(--lab-space-10);
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 1rem;
-        margin: 0 0 1.5rem;
+        gap: var(--lab-space-6);
+        overflow-x: clip;
       }
 
-      dl div {
-        padding: 0.85rem 1rem;
-        border-radius: 10px;
-        background: var(--lab-surface);
+      .dashboard__header {
+        display: grid;
+        gap: var(--lab-space-3);
+        min-width: 0;
       }
 
-      dt {
-        font-size: 0.8rem;
-        font-weight: 700;
+      .dashboard__header h1 {
+        font-size: var(--lab-text-3xl);
+      }
+
+      .dashboard__header p {
+        max-width: 66ch;
+      }
+
+      .dashboard__eyebrow {
+        margin: 0;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
-        color: var(--lab-ink-soft);
-        margin-bottom: 0.35rem;
+        letter-spacing: 0.08em;
+        color: var(--lab-color-primary-strong);
+        font-weight: 700;
+        font-size: var(--lab-text-xs);
       }
 
-      dd {
-        margin: 0;
-        font-weight: 600;
-        color: var(--lab-ink);
-      }
-
-      .state-panel__message {
-        margin: 1rem 0 0;
-        color: var(--lab-color-primary);
-        font-weight: 600;
-      }
-
-      h1 {
-        margin-bottom: 1rem;
-        font-size: 2rem;
-      }
-
-      p {
-        color: var(--lab-ink-soft);
-        margin-bottom: 2rem;
-      }
-
-      .dashboard-grid {
+      .dashboard__kpis {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--lab-space-4);
       }
 
-      .card {
-        padding: 1.5rem;
-        border: 1px solid var(--lab-line);
-        border-radius: 8px;
-        background: var(--lab-surface);
-        transition: box-shadow 0.2s ease;
+      .dashboard__main-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+        gap: var(--lab-space-4);
       }
 
-      .card:hover {
-        box-shadow: var(--lab-shadow-2);
+      .dashboard__panel {
+        min-width: 0;
       }
 
-      .card h2 {
-        font-size: 1.25rem;
-        margin-bottom: 0.5rem;
+      @media (max-width: 1000px) {
+        .dashboard__kpis {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .dashboard__main-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
       }
 
-      .card p {
-        margin: 0;
-        font-size: 0.95rem;
-      }
+      @media (max-width: 640px) {
+        .dashboard {
+          padding-inline: var(--lab-space-3);
+          padding-top: var(--lab-space-6);
+        }
 
-      @media (max-width: 900px) {
-        .dashboard-header {
-          flex-direction: column;
+        .dashboard__kpis {
+          grid-template-columns: minmax(0, 1fr);
         }
       }
     `,
   ],
 })
 export class DashboardComponent {
-  readonly store: AppStore = inject(AppStore);
-
-  private readonly themeOrder: AppTheme[] = ['light', 'dark', 'system'];
-
-  toggleSidebar(): void {
-    this.store.toggleSidebar();
-  }
-
-  toggleTheme(): void {
-    this.store.setTheme(this.nextTheme());
-  }
-
-  nextTheme(): AppTheme {
-    return this.getNextTheme(this.store.theme());
-  }
-
-  private getNextTheme(currentTheme: AppTheme): AppTheme {
-    const currentIndex = this.themeOrder.indexOf(currentTheme);
-    const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % this.themeOrder.length;
-    return this.themeOrder[nextIndex];
-  }
-
-  toggleLoading(): void {
-    this.store.setLoading(!this.store.isLoading());
-  }
-
-  seedDemo(): void {
-    this.store.seedDashboardDemo();
-  }
-
-  clearNotifications(): void {
-    this.store.clearNotifications();
-  }
+  readonly kpis: readonly KpiItem[] = [
+    {
+      label: 'Workflows Run',
+      value: '284',
+      delta: '+12.4% from last week',
+      tone: 'primary',
+    },
+    {
+      label: 'Active Automations',
+      value: '19',
+      delta: '+3 launched this sprint',
+      tone: 'success',
+    },
+    {
+      label: 'Success Rate',
+      value: '98.1%',
+      delta: '+0.7% stability lift',
+      tone: 'info',
+    },
+    {
+      label: 'Queued Tasks',
+      value: '42',
+      delta: 'Next dispatch in 5 min',
+      tone: 'neutral',
+    },
+  ];
 }
