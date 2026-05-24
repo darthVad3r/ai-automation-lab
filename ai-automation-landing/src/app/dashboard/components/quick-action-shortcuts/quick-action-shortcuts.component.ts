@@ -2,10 +2,17 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { QUICK_ACTION_SHORTCUTS_MOCK } from './quick-action-shortcuts.mock';
-import type { QuickAction } from './quick-action-shortcuts.types';
+import type { QuickAction, QuickActionIcon } from './quick-action-shortcuts.types';
 
 const SECTION_TITLE = 'Quick Actions';
 const DEFAULT_ROUTE = '/dashboard';
+const ICON_GLYPHS: Readonly<Record<QuickActionIcon, string>> = {
+  add_task: '✚',
+  edit_note: '✎',
+  receipt_long: '≣',
+  hub: '◎',
+  settings: '⚙',
+};
 
 @Component({
   selector: 'app-quick-action-shortcuts',
@@ -35,5 +42,9 @@ export class QuickActionShortcutsComponent {
 
   iconAriaLabel(shortcut: QuickAction): string {
     return `${shortcut.title} icon`;
+  }
+
+  iconGlyph(shortcut: QuickAction): string {
+    return ICON_GLYPHS[shortcut.icon];
   }
 }

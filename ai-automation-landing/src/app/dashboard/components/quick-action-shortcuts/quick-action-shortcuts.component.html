@@ -12,10 +12,8 @@
           type="button"
           [attr.aria-label]="shortcutAriaLabel(shortcut)"
           (click)="activateShortcut(shortcut)"
-          (keydown.enter)="activateShortcut(shortcut)"
-          (keydown.space)="$event.preventDefault(); activateShortcut(shortcut)"
         >
-          <span class="quick-actions__icon" aria-hidden="true">{{ shortcut.icon }}</span>
+          <span class="quick-actions__icon" aria-hidden="true">{{ iconGlyph(shortcut) }}</span>
           <span class="quick-actions__sr-only">{{ iconAriaLabel(shortcut) }}</span>
           <span class="quick-actions__content">
             <span class="quick-actions__title">{{ shortcut.title }}</span>
