@@ -2,6 +2,13 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { projectProgressMock } from './progress.mock';
 import type { ProgressRecord, ProgressStatus } from './progress.types';
 
+const STATUS_LABELS: Record<ProgressStatus, string> = {
+  'not-started': 'Not Started',
+  'in-progress': 'In Progress',
+  'in-review': 'In Review',
+  done: 'Done',
+};
+
 @Component({
   selector: 'app-progress-section',
   standalone: true,
@@ -96,28 +103,28 @@ import type { ProgressRecord, ProgressStatus } from './progress.types';
         border: 1px solid transparent;
       }
 
-      .progress__status--complete {
-        color: #0b3d2e;
-        background: #d1fae5;
-        border-color: #34d399;
+      .progress__status--done {
+        color: color-mix(in srgb, var(--lab-success) 70%, var(--lab-ink) 30%);
+        background: color-mix(in srgb, var(--lab-success) 20%, var(--lab-surface) 80%);
+        border-color: color-mix(in srgb, var(--lab-success) 45%, var(--lab-line) 55%);
       }
 
       .progress__status--in-progress {
-        color: #102a56;
-        background: #dbeafe;
-        border-color: #60a5fa;
+        color: color-mix(in srgb, var(--lab-info) 70%, var(--lab-ink) 30%);
+        background: color-mix(in srgb, var(--lab-info) 20%, var(--lab-surface) 80%);
+        border-color: color-mix(in srgb, var(--lab-info) 45%, var(--lab-line) 55%);
       }
 
-      .progress__status--planned {
-        color: #4a3500;
-        background: #fef3c7;
-        border-color: #fbbf24;
+      .progress__status--in-review {
+        color: color-mix(in srgb, var(--lab-warning) 70%, var(--lab-ink) 30%);
+        background: color-mix(in srgb, var(--lab-warning) 20%, var(--lab-surface) 80%);
+        border-color: color-mix(in srgb, var(--lab-warning) 45%, var(--lab-line) 55%);
       }
 
-      .progress__status--blocked {
-        color: #5b1111;
-        background: #fee2e2;
-        border-color: #f87171;
+      .progress__status--not-started {
+        color: color-mix(in srgb, var(--lab-danger) 70%, var(--lab-ink) 30%);
+        background: color-mix(in srgb, var(--lab-danger) 20%, var(--lab-surface) 80%);
+        border-color: color-mix(in srgb, var(--lab-danger) 45%, var(--lab-line) 55%);
       }
 
       .progress__percent {
@@ -175,14 +182,7 @@ export class ProgressSectionComponent {
   }
 
   statusLabel(status: ProgressStatus): string {
-    const labels: Record<ProgressStatus, string> = {
-      complete: 'Complete',
-      'in-progress': 'In Progress',
-      planned: 'Planned',
-      blocked: 'Blocked',
-    };
-
-    return labels[status];
+    return STATUS_LABELS[status];
   }
 
   statusClass(status: ProgressStatus): string {

@@ -1,4 +1,4 @@
-export type ProgressStatus = 'complete' | 'in-progress' | 'planned' | 'blocked';
+export type ProgressStatus = 'not-started' | 'in-progress' | 'in-review' | 'done';
 
 export interface ProgressRecord {
   readonly id: string;

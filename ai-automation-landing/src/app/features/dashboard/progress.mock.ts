@@ -4,7 +4,7 @@ export const projectProgressMock: readonly ProgressRecord[] = [
   {
     id: 'dashboard-skeleton',
     title: 'Dashboard Skeleton',
-    status: 'complete',
+    status: 'done',
     percent: 100,
   },
   {
@@ -16,25 +16,25 @@ export const projectProgressMock: readonly ProgressRecord[] = [
   {
     id: 'authentication-gate',
     title: 'Authentication Gate',
-    status: 'in-progress',
+    status: 'in-review',
     percent: 68,
   },
   {
     id: 'workflow-builder',
     title: 'Workflow Builder',
-    status: 'planned',
+    status: 'in-progress',
     percent: 35,
   },
   {
     id: 'automation-editor',
     title: 'Automation Editor',
-    status: 'planned',
+    status: 'not-started',
     percent: 28,
   },
   {
     id: 'analytics-pipeline',
     title: 'Analytics Pipeline',
-    status: 'blocked',
+    status: 'in-review',
     percent: 47,
   },
 ] as const;
