@@ -1,9 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { projectProgressMock } from '../../../components/dashboard/ProgressSection/progress.mock';
-import type {
-  ProgressRecord,
-  ProgressStatus,
-} from '../../../components/dashboard/ProgressSection/progress.types';
+import { projectProgressMock } from './progress.mock';
+import type { ProgressRecord, ProgressStatus } from './progress.types';
 
 @Component({
   selector: 'app-progress-section',
