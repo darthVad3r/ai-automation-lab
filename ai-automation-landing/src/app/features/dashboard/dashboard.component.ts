@@ -22,11 +22,7 @@ interface KpiMetric {
         <p>Foundational dashboard scaffold. Future stories will populate each section.</p>
       </header>
 
-      <app-quick-action-shortcuts />
-
-      <app-progress-section />
-
-      <section class="kpi-section" aria-label="KPI placeholders">
+      <section class="kpi-section" aria-label="Key performance indicators">
         <h2>KPIs</h2>
 
         <div class="kpi-section__grid">
@@ -39,6 +35,10 @@ interface KpiMetric {
           }
         </div>
       </section>
+
+      <app-quick-action-shortcuts />
+
+      <app-progress-section />
     </div>
   `,
   styles: [
@@ -88,13 +88,19 @@ interface KpiMetric {
         gap: var(--lab-space-3);
       }
 
-      @media (max-width: 860px) {
+      @media (max-width: 1199px) {
+        .kpi-section__grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 959px) {
         .kpi-section__grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
 
-      @media (max-width: 640px) {
+      @media (max-width: 560px) {
         .dashboard {
           width: min(1120px, calc(100% - (var(--lab-space-3) * 2)));
           padding-top: var(--lab-space-6);
