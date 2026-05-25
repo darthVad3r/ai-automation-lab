@@ -28,6 +28,7 @@ jobs:
         working-directory: ai-automation-landing
     env:
       BUILD_CONFIG: ${{ vars.BUILD_CONFIG }}
+      BRANCH_NAME: ${{ github.ref_name }}
 
     steps:
       - name: Checkout
