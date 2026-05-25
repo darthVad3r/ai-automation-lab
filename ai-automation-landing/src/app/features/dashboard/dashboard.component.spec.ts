@@ -53,9 +53,13 @@ describe('DashboardComponent', () => {
     fixture.detectChanges();
 
     const host = fixture.nativeElement as HTMLElement;
-    const firstAction = host.querySelector('button.quick-actions__shortcut') as HTMLButtonElement;
+    const shortcutButtons = host.querySelectorAll<HTMLButtonElement>(
+      'button.quick-actions__shortcut'
+    );
 
-    firstAction.click();
+    expect(shortcutButtons.length).toBeGreaterThan(0);
+
+    shortcutButtons[0]!.click();
     await fixture.whenStable();
 
     expect(navigateByUrlCalls.length).toBeGreaterThan(0);
