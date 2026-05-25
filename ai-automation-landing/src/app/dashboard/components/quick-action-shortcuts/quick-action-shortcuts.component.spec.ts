@@ -81,9 +81,13 @@ describe('QuickActionShortcutsComponent', () => {
     fixture.detectChanges();
 
     const host = fixture.nativeElement as HTMLElement;
-    const firstButton = host.querySelector('button.quick-actions__shortcut') as HTMLButtonElement;
+    const shortcutButtons = host.querySelectorAll<HTMLButtonElement>(
+      'button.quick-actions__shortcut'
+    );
 
-    firstButton.click();
+    expect(shortcutButtons.length).toBeGreaterThan(0);
+
+    shortcutButtons[0]!.click();
 
     expect(lastNavigatedUrl).toBe(QUICK_ACTION_SHORTCUTS_MOCK[0].route ?? '/dashboard');
   });

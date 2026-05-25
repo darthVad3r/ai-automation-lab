@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '@core/services/auth.service';
 
@@ -113,15 +113,7 @@ export class LoginPageComponent {
 
   private readonly router = inject(Router);
 
-  private readonly route = inject(ActivatedRoute);
-
   readonly showDemoAction = this.authService.canUseQaDemoAuth();
-
-  constructor() {
-    if (this.route.snapshot.queryParamMap.get('demo') === 'true') {
-      this.continueWithDemo();
-    }
-  }
 
   continueWithDemo(): void {
     if (!this.authService.tryEnableQaDemoSession()) {

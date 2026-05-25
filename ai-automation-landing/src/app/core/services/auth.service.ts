@@ -2,11 +2,20 @@ import { Injectable, inject } from '@angular/core';
 
 import { AppStore } from '../../state/app.store';
 
+interface QaDemoAuthConfig {
+  readonly enabled?: boolean;
+  readonly allowedHosts?: readonly string[];
+}
+
+type QaDemoAuthGlobal = typeof globalThis & {
+  __LAB_QA_DEMO_AUTH_CONFIG__?: QaDemoAuthConfig;
+};
+
+const DEFAULT_QA_ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0'] as const;
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly appStore = inject(AppStore);
-
-  private readonly qaAllowedHosts = new Set(['localhost', '127.0.0.1', '0.0.0.0']);
 
   isAuthenticated(): boolean {
     return this.appStore.isAuthenticated();
@@ -31,13 +40,14 @@ export class AuthService {
       return false;
     }
 
-    const normalizedHost = hostname.toLowerCase();
-
-    if (this.qaAllowedHosts.has(normalizedHost)) {
-      return true;
+    const config = this.readQaDemoAuthConfig();
+    if (!config.enabled) {
+      return false;
     }
 
-    return normalizedHost.endsWith('.vercel.app');
+    const normalizedHost = hostname.toLowerCase();
+    const allowedHosts = new Set([...DEFAULT_QA_ALLOWED_HOSTS, ...config.allowedHosts]);
+    return allowedHosts.has(normalizedHost);
   }
 
   tryEnableQaDemoSession(): boolean {
@@ -55,5 +65,13 @@ export class AuthService {
     }
 
     return globalThis.location?.hostname ?? '';
+  }
+
+  private readQaDemoAuthConfig(): { enabled: boolean; allowedHosts: readonly string[] } {
+    const config = (globalThis as QaDemoAuthGlobal).__LAB_QA_DEMO_AUTH_CONFIG__;
+    return {
+      enabled: config?.enabled === true,
+      allowedHosts: (config?.allowedHosts ?? []).map((host) => host.toLowerCase()),
+    };
   }
 }
