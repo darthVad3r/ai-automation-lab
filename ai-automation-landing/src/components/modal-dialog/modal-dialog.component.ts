@@ -139,7 +139,20 @@ export class ModalDialogComponent implements OnChanges, OnDestroy {
   }
 
   private restoreFocus(): void {
-    this.lastFocusedElement?.focus();
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    const fallbackTarget = document.body;
+
+    if (this.lastFocusedElement?.isConnected) {
+      this.lastFocusedElement.focus();
+      return;
+    }
+
+    if (fallbackTarget && typeof fallbackTarget.focus === 'function') {
+      fallbackTarget.focus();
+    }
   }
 
   private focusFirstElement(): void {

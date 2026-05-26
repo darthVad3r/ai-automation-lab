@@ -203,6 +203,25 @@ describe('ModalDialogComponent', () => {
     trigger.remove();
   });
 
+  it('falls back safely when previously focused element is removed', () => {
+    const fixture = TestBed.createComponent(ModalDialogComponent);
+    fixture.componentRef.setInput('title', 'Test Dialog');
+
+    const trigger = document.createElement('button');
+    document.body.appendChild(trigger);
+    trigger.focus();
+
+    fixture.componentRef.setInput('open', true);
+    fixture.detectChanges();
+
+    trigger.remove();
+
+    fixture.componentRef.setInput('open', false);
+    fixture.detectChanges();
+
+    expect(document.activeElement).toBe(document.body);
+  });
+
   it('binds aria references to generated title and description ids', () => {
     const fixture = TestBed.createComponent(HostComponent);
     fixture.componentInstance.open = true;
