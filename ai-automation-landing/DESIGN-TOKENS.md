@@ -43,11 +43,22 @@ Examples:
 
 The global stylesheet imports the token index once:
 
-@use 'styles/design-system/index' as \*;
+@use './styles/design-system/index' as \*;
 
 Global styles can then reference SCSS token variables directly.
 
-Token values are also exposed as global CSS custom properties from src/styles.scss using the ds prefix. This allows component styles to consume token values without additional SCSS imports.
+Component SCSS does not inherit @use declarations from styles.scss. Components should consume the global CSS custom properties exposed from src/styles.scss when import-free usage is required.
+
+The following token groups are exported as CSS variables with the --ds- prefix:
+
+- Color tokens
+- Spacing tokens
+- Typography tokens
+- Radius tokens
+- Shadow tokens
+- Z-index tokens
+
+Breakpoint tokens are also exported as CSS variables for runtime reads, but CSS variables cannot be used directly in @media conditions. Use the breakpoint scale values directly in media queries or consume them through shared Sass mixins.
 
 Examples:
 
@@ -61,26 +72,27 @@ Examples:
 
 ## Usage Examples
 
+```scss
 .page-shell {
-background: var(--ds-color-background-default);
-color: var(--ds-color-neutral-900);
-padding: var(--ds-space-lg);
-border: 1px solid var(--ds-color-border-default);
-border-radius: var(--ds-radius-md);
-box-shadow: var(--ds-shadow-sm);
-z-index: var(--ds-zindex-base);
+  background: var(--ds-color-background-default);
+  color: var(--ds-color-neutral-900);
+  padding: var(--ds-space-lg);
+  border: 1px solid var(--ds-color-border-default);
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--ds-shadow-sm);
+  z-index: var(--ds-zindex-base);
 }
 
 h1 {
-font-family: var(--ds-font-family-sans);
-font-size: var(--ds-font-size-h1);
-line-height: var(--ds-line-height-tight);
-font-weight: var(--ds-font-weight-bold);
+  font-family: var(--ds-font-family-sans);
+  font-size: var(--ds-font-size-h1);
+  line-height: var(--ds-line-height-tight);
+  font-weight: var(--ds-font-weight-bold);
 }
 
-    @media (min-width: 1024px) {
-
-.page-shell {
-padding: var(--ds-space-xl);
+@media (min-width: 1024px) {
+  .page-shell {
+    padding: var(--ds-space-xl);
+  }
 }
-}
+```
