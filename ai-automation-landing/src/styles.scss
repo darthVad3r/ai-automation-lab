@@ -21,12 +21,12 @@
   --ds-color-error-500: #{$color-error-500};
   --ds-color-info-500: #{$color-info-500};
 
-  --ds-color-background-default: #{$color-background-default};
-  --ds-color-background-subtle: #{$color-background-subtle};
-  --ds-color-surface-default: #{$color-surface-default};
-  --ds-color-surface-muted: #{$color-surface-muted};
-  --ds-color-border-default: #{$color-border-default};
-  --ds-color-divider-default: #{$color-divider-default};
+  --ds-color-background-default: var(--lab-bg, #{$color-background-default});
+  --ds-color-background-subtle: var(--lab-bg-subtle, #{$color-background-subtle});
+  --ds-color-surface-default: var(--lab-surface, #{$color-surface-default});
+  --ds-color-surface-muted: var(--lab-surface-muted, #{$color-surface-muted});
+  --ds-color-border-default: var(--lab-line, #{$color-border-default});
+  --ds-color-divider-default: var(--lab-line, #{$color-divider-default});
 
   --ds-space-2: #{$space-2};
   --ds-space-4: #{$space-4};
