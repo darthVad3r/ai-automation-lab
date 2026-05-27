@@ -64,7 +64,21 @@ describe('SpacingLayoutPrimitivesComponent', () => {
 
     const layout = fixture.nativeElement.querySelector('.ui-layout') as HTMLElement;
 
-    expect(layout.style.getPropertyValue('--ui-layout-gap')).toBe('var(--lab-space-10)');
+    expect(layout.style.getPropertyValue('--ui-layout-gap')).toBe(
+      'var(--lab-space-10, var(--lab-space-4))'
+    );
+  });
+
+  it('encodes fallback token when an unexpected gap value is set at runtime', () => {
+    const fixture = TestBed.createComponent(HostComponent);
+    fixture.componentInstance.gap = '999' as unknown as GapToken;
+    fixture.detectChanges();
+
+    const layout = fixture.nativeElement.querySelector('.ui-layout') as HTMLElement;
+
+    expect(layout.style.getPropertyValue('--ui-layout-gap')).toBe(
+      'var(--lab-space-999, var(--lab-space-4))'
+    );
   });
 
   it('applies wrap modifier for inline layouts', () => {
@@ -77,5 +91,16 @@ describe('SpacingLayoutPrimitivesComponent', () => {
 
     expect(layout.classList.contains('ui-layout--inline')).toBe(true);
     expect(layout.classList.contains('ui-layout--wrap')).toBe(true);
+  });
+
+  it('falls back to 1 column when columns is NaN', () => {
+    const fixture = TestBed.createComponent(HostComponent);
+    fixture.componentInstance.mode = 'grid';
+    fixture.componentInstance.columns = Number.NaN;
+    fixture.detectChanges();
+
+    const layout = fixture.nativeElement.querySelector('.ui-layout') as HTMLElement;
+
+    expect(layout.style.getPropertyValue('--ui-layout-columns')).toBe('1');
   });
 });

@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
+let cardInstanceCount = 0;
+
 @Component({
   selector: 'app-card',
   standalone: true,
@@ -13,4 +15,6 @@ export class CardComponent {
   readonly subtitle = input<string>('');
 
   readonly surface = input<'default' | 'muted'>('default');
+
+  readonly titleId = `ui-card-title-${++cardInstanceCount}`;
 }

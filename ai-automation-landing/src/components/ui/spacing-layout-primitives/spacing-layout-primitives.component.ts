@@ -25,8 +25,13 @@ export class SpacingLayoutPrimitivesComponent {
 
   readonly columns = input<number>(2);
 
-  readonly hostStyles = computed(() => ({
-    '--ui-layout-gap': `var(--lab-space-${this.gap()})`,
-    '--ui-layout-columns': `${Math.max(1, Math.round(this.columns()))}`,
-  }));
+  readonly hostStyles = computed(() => {
+    const raw = Number(this.columns());
+    const cols = Number.isFinite(raw) ? Math.max(1, Math.round(raw)) : 1;
+
+    return {
+      '--ui-layout-gap': `var(--lab-space-${this.gap()}, var(--lab-space-4))`,
+      '--ui-layout-columns': `${cols}`,
+    };
+  });
 }

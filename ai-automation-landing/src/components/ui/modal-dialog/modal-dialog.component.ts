@@ -3,13 +3,16 @@ import {
   Component,
   ElementRef,
   HostListener,
-  OnChanges,
   OnDestroy,
-  SimpleChanges,
   ViewChild,
+  effect,
+  inject,
   input,
   output,
 } from '@angular/core';
+
+import { ModalDialogIdService } from './modal-dialog-id.service';
+import { ModalDialogRegistryService } from './modal-dialog-registry.service';
 
 export type DialogCloseReason = 'close-button' | 'backdrop' | 'escape';
 
@@ -20,10 +23,10 @@ export type DialogCloseReason = 'close-button' | 'backdrop' | 'escape';
   styleUrl: './modal-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ModalDialogComponent implements OnChanges, OnDestroy {
-  private static instanceCount = 0;
+export class ModalDialogComponent implements OnDestroy {
+  private readonly idService = inject(ModalDialogIdService);
 
-  private static openDialogIds: string[] = [];
+  private readonly registry = inject(ModalDialogRegistryService);
 
   @ViewChild('dialogPanel')
   private readonly dialogPanel?: ElementRef<HTMLElement>;
@@ -36,7 +39,7 @@ export class ModalDialogComponent implements OnChanges, OnDestroy {
 
   readonly closeOnBackdrop = input<boolean>(true);
 
-  readonly dialogInstanceId = `ui-dialog-${ModalDialogComponent.nextInstanceId()}`;
+  readonly dialogInstanceId = this.idService.createId('ui-dialog');
 
   readonly titleId = `${this.dialogInstanceId}-title`;
 
@@ -46,26 +49,41 @@ export class ModalDialogComponent implements OnChanges, OnDestroy {
 
   private lastFocusedElement: HTMLElement | null = null;
 
-  private static nextInstanceId(): number {
-    ModalDialogComponent.instanceCount += 1;
-    return ModalDialogComponent.instanceCount;
-  }
+  private previousOpen = false;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['open']?.currentValue) {
-      this.registerOpenDialog();
-      this.capturePreviouslyFocusedElement();
-      queueMicrotask(() => this.focusFirstElement());
-      return;
-    }
+  constructor() {
+    effect(() => {
+      const isOpen = this.open();
 
-    if (changes['open']?.currentValue === false) {
-      this.unregisterOpenDialog();
-      this.restoreFocus();
-    }
+      if (isOpen && !this.previousOpen) {
+        this.registerOpenDialog();
+        this.capturePreviouslyFocusedElement();
+
+        if (typeof document !== 'undefined') {
+          queueMicrotask(() => {
+            const panel = this.dialogPanel?.nativeElement;
+
+            if (!this.open() || !panel?.isConnected) {
+              return;
+            }
+
+            this.focusFirstElement();
+          });
+        }
+      } else if (!isOpen && this.previousOpen) {
+        this.unregisterOpenDialog();
+        this.restoreFocus();
+      }
+
+      this.previousOpen = isOpen;
+    });
   }
 
   ngOnDestroy(): void {
+    if (this.open()) {
+      this.restoreFocus();
+    }
+
     this.unregisterOpenDialog();
   }
 
@@ -182,18 +200,14 @@ export class ModalDialogComponent implements OnChanges, OnDestroy {
   }
 
   private registerOpenDialog(): void {
-    if (!ModalDialogComponent.openDialogIds.includes(this.dialogInstanceId)) {
-      ModalDialogComponent.openDialogIds.push(this.dialogInstanceId);
-    }
+    this.registry.register(this.dialogInstanceId);
   }
 
   private unregisterOpenDialog(): void {
-    ModalDialogComponent.openDialogIds = ModalDialogComponent.openDialogIds.filter(
-      (id) => id !== this.dialogInstanceId
-    );
+    this.registry.unregister(this.dialogInstanceId);
   }
 
   private isTopMostDialog(): boolean {
-    return ModalDialogComponent.openDialogIds.at(-1) === this.dialogInstanceId;
+    return this.registry.isTopMost(this.dialogInstanceId);
   }
 }

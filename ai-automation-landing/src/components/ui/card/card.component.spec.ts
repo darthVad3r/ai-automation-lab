@@ -48,12 +48,14 @@ describe('CardComponent', () => {
     expect(card.classList.contains('ui-card--muted')).toBe(true);
   });
 
-  it('provides aria-label when title is present', () => {
+  it('labels the card via aria-labelledby pointing at the title element', () => {
     const fixture = TestBed.createComponent(HostComponent);
     fixture.detectChanges();
 
     const card = fixture.nativeElement.querySelector('.ui-card') as HTMLElement;
+    const title = fixture.nativeElement.querySelector('.ui-card__title') as HTMLElement;
 
-    expect(card.getAttribute('aria-label')).toBe('Platform Health card');
+    expect(title.id).toBeTruthy();
+    expect(card.getAttribute('aria-labelledby')).toBe(title.id);
   });
 });
