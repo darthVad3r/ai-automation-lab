@@ -222,6 +222,24 @@ describe('ModalDialogComponent', () => {
     expect(document.activeElement).toBe(document.body);
   });
 
+  it('restores focus to trigger when destroyed while open', () => {
+    const fixture = TestBed.createComponent(ModalDialogComponent);
+    fixture.componentRef.setInput('title', 'Test Dialog');
+
+    const trigger = document.createElement('button');
+    document.body.appendChild(trigger);
+    trigger.focus();
+
+    fixture.componentRef.setInput('open', true);
+    fixture.detectChanges();
+
+    fixture.destroy();
+
+    expect(document.activeElement).toBe(trigger);
+
+    trigger.remove();
+  });
+
   it('binds aria references to generated title and description ids', () => {
     const fixture = TestBed.createComponent(HostComponent);
     fixture.componentInstance.open = true;

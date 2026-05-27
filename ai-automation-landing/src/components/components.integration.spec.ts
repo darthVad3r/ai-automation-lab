@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { ButtonComponent } from './button';
-import { CardComponent } from './card';
-import { InputFieldComponent } from './input-field';
-import { ModalDialogComponent } from './modal-dialog';
-import { SelectDropdownComponent } from './select-dropdown';
-import { SpacingLayoutPrimitivesComponent } from './spacing-layout-primitives';
-import { TypographySystemComponent } from './typography-system';
+import { ButtonComponent } from './ui/button';
+import { CardComponent } from './ui/card';
+import { InputFieldComponent } from './ui/input-field';
+import { ModalDialogComponent } from './ui/modal-dialog';
+import { SelectDropdownComponent } from './ui/select-dropdown';
+import { SpacingLayoutPrimitivesComponent } from './ui/spacing-layout-primitives';
+import { TypographySystemComponent } from './ui/typography-system';
 
 @Component({
   standalone: true,

@@ -19,7 +19,12 @@
 ## Usage Examples
 
 ```html
-<app-select-dropdown id="role" label="Role" [options]="roles" [(value)]="role" />
+<app-select-dropdown
+  id="role"
+  label="Role"
+  [options]="roles"
+  [(value)]="role"
+></app-select-dropdown>
 ```
 
 ## Accessibility Notes

@@ -20,8 +20,13 @@
 ## Usage Examples
 
 ```html
-<app-input-field id="name" label="Full Name" [(value)]="name" />
-<app-input-field id="email" label="Email" type="email" hint="We never share your email" />
+<app-input-field id="name" label="Full Name" [(value)]="name"></app-input-field>
+<app-input-field
+  id="email"
+  label="Email"
+  type="email"
+  hint="We never share your email"
+></app-input-field>
 ```
 
 ## Accessibility Notes

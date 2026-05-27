@@ -12,8 +12,8 @@
 ## Usage Examples
 
 ```html
-<app-typography-system variant="h1" text="Dashboard" />
-<app-typography-system variant="body" text="Body copy goes here." />
+<app-typography-system variant="h1" text="Dashboard"></app-typography-system>
+<app-typography-system variant="body" text="Body copy goes here."></app-typography-system>
 ```
 
 ## Accessibility Notes

@@ -22,5 +22,5 @@
 ## Accessibility Notes
 
 - Uses role="dialog" and aria-modal="true".
-- Connects title and optional description with labelledby/describedby.
+- Connects title via aria-labelledby and optional description via aria-describedby.
 - Traps Tab focus while open and supports Escape to close.
